@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:queryHint="Search employees" />
+
+        <Button
+            android:id="@+id/sortButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sort by Job" />
+    </LinearLayout>
+
+    <!-- Static Header for Personal Schedule -->
+    <LinearLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@drawable/rounded_background">
+
+        <TextView
+            android:id="@+id/tvMySchedule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My Schedule"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Add more details if necessary -->
+        <TextView
+            android:id="@+id/tvMyShift"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shift: "
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/tvMyJob"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Job: "
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/tvMyForeman"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Foreman: "
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/tvMyForemanPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Foreman Phone: "
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tvMyJobAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Job Address: "
+            android:textSize="14sp" />
+    </LinearLayout>
+
+
+    <!-- RecyclerView for Other Employees -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvEmployees"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:scrollbars="vertical" />
+</LinearLayout>
