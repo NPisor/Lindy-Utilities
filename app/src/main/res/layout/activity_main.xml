@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     android:orientation="vertical">
 
     <LinearLayout
@@ -39,6 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="My Schedule"
+            android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="18sp"
             android:layout_marginBottom="8dp" />
@@ -48,6 +50,7 @@
             android:id="@+id/tvMyShift"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
             android:text="Shift: "
             android:textSize="14sp"
             android:layout_marginBottom="4dp" />
@@ -56,6 +59,7 @@
             android:id="@+id/tvMyJob"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
             android:text="Job: "
             android:textSize="14sp"
             android:layout_marginBottom="4dp" />
@@ -64,6 +68,7 @@
             android:id="@+id/tvMyForeman"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
             android:text="Foreman: "
             android:textSize="14sp"
             android:layout_marginBottom="4dp" />
@@ -72,17 +77,28 @@
             android:id="@+id/tvMyForemanPhone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
             android:text="Foreman Phone: "
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp"/>
 
         <TextView
             android:id="@+id/tvMyJobAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
             android:text="Job Address: "
             android:textSize="14sp" />
-    </LinearLayout>
 
+        <Button
+            android:id="@+id/btnGetDirections"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Get Directions"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"/>
+    </LinearLayout>
 
     <!-- RecyclerView for Other Employees -->
     <androidx.recyclerview.widget.RecyclerView

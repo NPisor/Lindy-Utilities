@@ -14,6 +14,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import java.time.LocalTime;
 import java.util.List;
 
 public class ScheduleWorker extends Worker {
@@ -23,13 +24,32 @@ public class ScheduleWorker extends Worker {
     private static final String PREFS_NAME = "LindyUtilitiesPrefs";
     private static final String EMPLOYEE_ID_KEY = "employeeId";
 
+    private LocalTime currentTime, startTime, endTime;
+
     public ScheduleWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
 
     @Override
     public Result doWork() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            currentTime = LocalTime.now();
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startTime = LocalTime.of(13, 0); // 1:00 PM
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            endTime = LocalTime.of(23, 59); // 11:59 PM (just before midnight)
+        }
+
         String employeeId = getCachedEmployeeId();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (currentTime.isBefore(startTime) || currentTime.isAfter(endTime)) {
+                Log.d("ScheduleWorker", "Outside update window (1:00 PM - 12:00 AM). Skipping API call.");
+                return Result.success(); // Do nothing and exit successfully
+            }
+        }
         if (employeeId == null || employeeId.isEmpty()) {
             Log.e("ScheduleWorker", "Employee ID is missing. Please set it before running the worker.");
             return Result.failure(); // Fail the work if employeeId is not available

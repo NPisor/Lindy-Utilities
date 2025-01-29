@@ -1,11 +1,18 @@
 package com.example.lindyutilities;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.provider.Settings;
 import android.text.InputType;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -35,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     TextView tvMySchedule, tvMyShift, tvMyJob, tvMyForeman, tvMyAddress, tvMyForemanPhone;
     String employeeId;
-    Button sortButton;
+    Button sortButton, btnGetDirections;
     EmployeeAdapter adapter;
     private List<Employee> originalEmployeeList;
 
@@ -50,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         tvMyForeman = findViewById(R.id.tvMyForeman);
         tvMyAddress = findViewById(R.id.tvMyJobAddress);
         tvMyForemanPhone = findViewById(R.id.tvMyForemanPhone);
+        btnGetDirections = findViewById(R.id.btnGetDirections);
 
         sortButton = findViewById(R.id.sortButton);
 
@@ -71,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
                         100);
             }
         }
+        requestBatteryOptimizationException();
 
         String workerName = employeeId;
 
@@ -101,7 +110,10 @@ public class MainActivity extends AppCompatActivity {
                         tvMyForeman.setText("Foreman: " + mySchedule.getForeman());
                         tvMyForemanPhone.setText("Foreman Phone: " + mySchedule.getForemanPhone());
                         tvMyAddress.setText("Job Address: " + mySchedule.getJobAddress());
+                        btnGetDirections.setVisibility(View.VISIBLE);
                     }
+                    btnGetDirections.setEnabled(!mySchedule.getJobAddress().equals("N/A"));
+                    btnGetDirections.setOnClickListener(v -> openGoogleMapsWithAddress(mySchedule.getJobAddress()));
                     originalEmployeeList = employees;
                     adapter = new EmployeeAdapter(employees);
                     recyclerView.setAdapter(adapter);
@@ -252,5 +264,35 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         WorkManager.getInstance(this).cancelAllWork();
+    }
+
+    public void openGoogleMapsWithAddress(String address) {
+        new Thread(() -> {
+            try {
+                Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(address));
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+
+                // Do NOT set package - allow user to choose app
+                if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(Intent.createChooser(mapIntent, "Choose a maps app"));
+                } else {
+                    // Open in browser as a fallback
+                    Uri webUri = Uri.parse("https://www.google.com/maps/search/?api=1&query=" + Uri.encode(address));
+                    Intent webIntent = new Intent(Intent.ACTION_VIEW, webUri);
+                    startActivity(webIntent);
+                }
+            } catch (Exception e) {
+                Log.e("MapsIntentError", "Failed to launch Maps Intent", e);
+            }
+        }).start(); // Run in background thread
+    }
+
+    public void requestBatteryOptimizationException() {
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        if (!pm.isIgnoringBatteryOptimizations(getPackageName())) {
+            Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+            intent.setData(Uri.parse("package:" + getPackageName()));
+            startActivity(intent);
+        }
     }
 }
