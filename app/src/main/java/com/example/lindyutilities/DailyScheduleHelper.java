@@ -33,7 +33,7 @@ public class DailyScheduleHelper {
     private static final String CHANNEL_ID = "schedule_updates";
     private static final int NOTIFICATION_ID = 1;
 
-    private final String url = "https://scheduling.lindypaving.com/tpjwebsite.nsf/xhtmlDailySchedule?openForm";
+    private final String url = "";
     private final String employeeId;
     private final OkHttpClient client;
     private String lastHash = null; // To store the last hash of the schedule
